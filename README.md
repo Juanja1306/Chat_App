@@ -1,2 +1,2 @@
 # Chat_App
- Chat global en timepo real, utilizando docker para desplegar el servidor. Utilizando Angular para frontend y Express.js para backend
+ Chat global en tiempo real, utilizando docker para desplegar el servidor con Angular para frontend y Express.js para backend
