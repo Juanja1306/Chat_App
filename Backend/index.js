@@ -1,7 +1,7 @@
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
-const path = require('path');
+const cors = require('cors'); // Permitir solicitudes de CORS para conectar con el Frontend
 
 const app = express();
 const server = http.createServer(app);
@@ -9,15 +9,16 @@ const io = new Server(server);
 
 const PORT = 3000;
 
-// Servir archivos estáticos de la misma carpeta Backend
-app.use(express.static(path.join(__dirname)));
+// Habilitar CORS para permitir solicitudes desde el Frontend en Angular
+app.use(cors());
+app.use(express.json()); // Para poder recibir datos en formato JSON
 
-// Ruta principal para servir index.html
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+// API para obtener un mensaje de prueba
+app.get('/api/status', (req, res) => {
+    res.json({ status: 'API funcionando correctamente' });
 });
 
-// Configuración de Socket.IO para manejar conexiones
+// Configuración de Socket.IO para manejar conexiones y mensajes en tiempo real
 io.on('connection', (socket) => {
     console.log('Un usuario se ha conectado');
 
@@ -32,5 +33,5 @@ io.on('connection', (socket) => {
 });
 
 server.listen(PORT, () => {
-    console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
+    console.log(`Servidor API ejecutándose en http://localhost:${PORT}`);
 });
