@@ -13,10 +13,16 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json()); // Para poder recibir datos en formato JSON
 
+//app.use(express.static(path.join(__dirname, 'public')));
+
 // API para obtener un mensaje de prueba
 app.get('/api/status', (req, res) => {
     res.json({ status: 'API funcionando correctamente' });
 });
+
+// app.get('*', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'public', 'index.html'));
+// });
 
 // Configuración de Socket.IO para manejar conexiones y mensajes en tiempo real
 io.on('connection', (socket) => {
