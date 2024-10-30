@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Global</title>
+    <style>
+        #chat { width: 300px; height: 400px; overflow-y: scroll; border: 1px solid #000; }
+        #message { width: 200px; }
+    </style>
+</head>
+<body>
+    <h2>Chat Global</h2>
+    <input type="text" id="username" placeholder="Nombre de usuario" />
+    <div id="chat"></div>
+    <input type="text" id="message" placeholder="Escribe un mensaje" />
+    <button onclick="sendMessage()">Enviar</button>
+
+    <!-- Importa el script de Socket.IO -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io(); // Conectar al servidor de Socket.IO
+
+        const chatDiv = document.getElementById('chat');
+        const usernameInput = document.getElementById('username');
+        const messageInput = document.getElementById('message');
+
+        // Escuchar mensajes del servidor y mostrarlos en el chat
+        socket.on('chatMessage', (data) => {
+            const msgElement = document.createElement('p');
+            msgElement.textContent = `${data.username}: ${data.message}`;
+            chatDiv.appendChild(msgElement);
+            chatDiv.scrollTop = chatDiv.scrollHeight; // Desplaza el chat hacia abajo
+        });
+
+        // Función para enviar mensajes
+        function sendMessage() {
+            const message = messageInput.value;
+            const username = usernameInput.value || "Anónimo";
+
+            if (message) {
+                socket.emit('chatMessage', { username, message }); // Enviar el mensaje y el usuario al servidor
+                messageInput.value = ''; // Limpiar el campo de mensaje
+            }
+        }
+    </script>
+</body>
+</html>
