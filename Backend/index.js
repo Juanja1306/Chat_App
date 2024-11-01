@@ -5,39 +5,43 @@ const cors = require('cors'); // Permitir solicitudes de CORS para conectar con 
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+
+// Configuración de CORS en Socket.IO
+const io = new Server(server, {
+    cors: {
+      origin: "http://localhost:4200", // Dirección de tu cliente Angular
+      methods: ["GET", "POST"],
+      credentials: true
+    }
+});
 
 const PORT = 3000;
 
-// Habilitar CORS para permitir solicitudes desde el Frontend en Angular
-app.use(cors());
-app.use(express.json()); // Para poder recibir datos en formato JSON
+// Habilitar CORS en Express para el cliente Angular
+app.use(cors({ origin: "http://localhost:4200", credentials: true }));
+app.use(express.json()); // Permitir solicitudes JSON
 
-//app.use(express.static(path.join(__dirname, 'public')));
-
-// API para obtener un mensaje de prueba
+// Ruta de prueba para verificar la API
 app.get('/api/status', (req, res) => {
     res.json({ status: 'API funcionando correctamente' });
 });
 
-// app.get('*', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'public', 'index.html'));
-// });
-
-// Configuración de Socket.IO para manejar conexiones y mensajes en tiempo real
+// Configuración de Socket.IO para manejar conexiones en tiempo real
 io.on('connection', (socket) => {
     console.log('Un usuario se ha conectado');
 
-    // Escuchar los mensajes enviados por el cliente
+    // Escuchar mensajes desde el cliente
     socket.on('chatMessage', (data) => {
-        io.emit('chatMessage', data); // Enviar el mensaje a todos los clientes conectados
+        io.emit('chatMessage', data); // Reenviar mensaje a todos los clientes
     });
 
+    // Detectar desconexión del cliente
     socket.on('disconnect', () => {
         console.log('Un usuario se ha desconectado');
     });
 });
 
+// Iniciar el servidor
 server.listen(PORT, () => {
     console.log(`Servidor API ejecutándose en http://localhost:${PORT}`);
 });
