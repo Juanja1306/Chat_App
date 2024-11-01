@@ -1,0 +1,7 @@
+<h2>Chat Global</h2>
+<input type="text" [(ngModel)]="username" placeholder="Nombre de usuario" />
+<div id="chat">
+  <p *ngFor="let msg of messages">{{ msg.username }}: {{ msg.message }}</p>
+</div>
+<input type="text" [(ngModel)]="message" placeholder="Escribe un mensaje" />
+<button (click)="sendMessage()">Enviar</button>
