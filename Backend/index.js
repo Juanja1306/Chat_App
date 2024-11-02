@@ -9,9 +9,9 @@ const server = http.createServer(app);
 // Configuración de CORS en Socket.IO
 const io = new Server(server, {
     cors: {
-      origin: "http://localhost:4200", // Dirección de tu cliente Angular
-      methods: ["GET", "POST"],
-      credentials: true
+        origin: "http://localhost:4200", // Dirección de tu cliente Angular
+        methods: ["GET", "POST"],
+        credentials: true
     }
 });
 
@@ -26,13 +26,13 @@ app.get('/api/status', (req, res) => {
     res.json({ status: 'API funcionando correctamente' });
 });
 
-// Configuración de Socket.IO para manejar conexiones en tiempo real
+// Configuración de Socket.IO para manejar conexiones y mensajes en tiempo real
 io.on('connection', (socket) => {
     console.log('Un usuario se ha conectado');
 
-    // Escuchar mensajes desde el cliente
+    // Escuchar los mensajes enviados por el cliente
     socket.on('chatMessage', (data) => {
-        io.emit('chatMessage', data); // Reenviar mensaje a todos los clientes
+        io.emit('chatMessage', data); // Enviar el mensaje a todos los clientes conectados
     });
 
     // Detectar desconexión del cliente
