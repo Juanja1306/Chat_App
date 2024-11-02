@@ -1,0 +1,13 @@
+<div class="container">
+    <h1>Chat-App</h1>
+    <div class="msg-container">
+        @for (msg of messages; track msg) {
+            <p>{{msg}}</p>
+        }
+    </div>
+
+    <div class="buttons-continer">
+        <input [(ngModel)]="newMessage" placeholder="Escribe un mensaje">
+        <button (click)="sendMessage()">Enviar</button>
+    </div>
+</div>
