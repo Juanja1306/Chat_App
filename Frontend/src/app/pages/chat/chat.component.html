@@ -1,8 +1,15 @@
 <div class="container">
     <h1>Chat-App</h1>
+
+    <div class="user">
+        <input [(ngModel)]="currentUSer" placeholder="Ingrese su usuario aqui">
+    </div>
+
     <div class="msg-container">
         @for (msg of messages; track msg) {
-            <p>{{msg}}</p>
+            <div class="messages">
+                <p>{{msg}}</p>
+            </div>
         }
     </div>
 
